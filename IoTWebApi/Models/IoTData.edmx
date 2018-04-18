@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="madukaIoTSqlDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="ConfigName" />
+          </Key>
+          <Property Name="ConfigName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ConfigValue" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--產生期間發現錯誤:
+警告 6002: 資料表/檢視 'madukaIoTSqlDb.dbo.RaspberrySensorData' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
+        <EntityType Name="RaspberrySensorData">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="SendDateTime" />
+            <PropertyRef Name="Temperature" />
+            <PropertyRef Name="Humidity" />
+          </Key>
+          <Property Name="DeviceId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SendDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Temperature" Type="float" Nullable="false" />
+          <Property Name="Humidity" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="madukaIoTSqlDbModelStoreContainer">
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RaspberrySensorData" EntityType="Self.RaspberrySensorData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RaspberrySensorData].[DeviceId] AS [DeviceId], 
+    [RaspberrySensorData].[SendDateTime] AS [SendDateTime], 
+    [RaspberrySensorData].[Temperature] AS [Temperature], 
+    [RaspberrySensorData].[Humidity] AS [Humidity]
+    FROM [dbo].[RaspberrySensorData] AS [RaspberrySensorData]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="madukaIoTSqlDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="ConfigName" />
+          </Key>
+          <Property Name="ConfigName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConfigValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RaspberrySensorData">
+          <Key>
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="SendDateTime" />
+            <PropertyRef Name="Temperature" />
+            <PropertyRef Name="Humidity" />
+          </Key>
+          <Property Name="DeviceId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SendDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="madukaIoTSqlDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Config" EntityType="Self.Config" />
+          <EntitySet Name="RaspberrySensorData" EntityType="Self.RaspberrySensorData" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="madukaIoTSqlDbModelStoreContainer" CdmEntityContainer="madukaIoTSqlDbEntities">
+          <EntitySetMapping Name="Config">
+            <EntityTypeMapping TypeName="madukaIoTSqlDbModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="ConfigName" ColumnName="ConfigName" />
+                <ScalarProperty Name="ConfigValue" ColumnName="ConfigValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RaspberrySensorData">
+            <EntityTypeMapping TypeName="madukaIoTSqlDbModel.RaspberrySensorData">
+              <MappingFragment StoreEntitySet="RaspberrySensorData">
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="SendDateTime" ColumnName="SendDateTime" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
